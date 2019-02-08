@@ -1,0 +1,269 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>DHT22.DHT22.DHT22 &mdash; IoT Libraries  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> IoT Libraries
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">IoT Libraries</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>DHT22.DHT22.DHT22</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for DHT22.DHT22.DHT22</h1><div class="highlight"><pre>
+<span></span><span class="ch">#! usr/bin/python</span>
+
+<span class="c1"># import Adafruit_DHT</span>
+
+<div class="viewcode-block" id="DHT22"><a class="viewcode-back" href="../../../index.html#DHT22.DHT22">[docs]</a><span class="k">class</span> <span class="nc">DHT22</span><span class="p">():</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	A wrapper class that uses Adafruit&#39;s DHT library. Stores the GPIO pin and can retrieve temperature in Celsius, humidity in percent.</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+
+	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">_pin</span><span class="p">):</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_pin</span> <span class="o">=</span> <span class="n">_pin</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_sensor</span> <span class="o">=</span> <span class="n">Adafruit_DHT</span><span class="o">.</span><span class="n">DHT22</span>        
+
+<div class="viewcode-block" id="DHT22.get_temperature_and_humidity"><a class="viewcode-back" href="../../../index.html#DHT22.DHT22.get_temperature_and_humidity">[docs]</a>	<span class="k">def</span> <span class="nf">get_temperature_and_humidity</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    	:return: humidity, temperature. In that order. Must be received into two variables by the driver script.</span>
+
+<span class="sd">    	:example: myHumidity, myTemperature = myDHT22.get_temperature_and_humidity()</span>
+<span class="sd">    	</span>
+<span class="sd">    	&quot;&quot;&quot;</span>
+
+		<span class="k">return</span> <span class="n">Adafruit_DHT</span><span class="o">.</span><span class="n">read_retry</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_sensor</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pin</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="DHT22.get_temperature"><a class="viewcode-back" href="../../../index.html#DHT22.DHT22.get_temperature">[docs]</a>	<span class="k">def</span> <span class="nf">get_temperature</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    	:return: temperature in celsius, to two decimal places.</span>
+<span class="sd">    	&quot;&quot;&quot;</span>
+
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_temperature_and_humidity</span><span class="p">()[</span><span class="mi">1</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="DHT22.get_humidity"><a class="viewcode-back" href="../../../index.html#DHT22.DHT22.get_humidity">[docs]</a>	<span class="k">def</span> <span class="nf">get_humidity</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    	:return: humidity in percent, to two decimal places.</span>
+<span class="sd">    	&quot;&quot;&quot;</span>
+
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_temperature_and_humidity</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span></div></div>
+
+
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd"># Sensor should be set to Adafruit_DHT.DHT11,</span>
+<span class="sd"># Adafruit_DHT.DHT22, or Adafruit_DHT.AM2302.</span>
+<span class="sd">sensor = Adafruit_DHT.DHT22</span>
+
+<span class="sd"># Example using a Beaglebone Black with DHT sensor</span>
+<span class="sd"># connected to pin P8_11.</span>
+<span class="sd">pin = &#39;P8_11&#39;</span>
+
+<span class="sd"># Example using a Raspberry Pi with DHT sensor</span>
+<span class="sd"># connected to GPIO23.</span>
+<span class="sd">#pin = 23</span>
+
+<span class="sd"># Try to grab a sensor reading.  Use the read_retry method which will retry up</span>
+<span class="sd"># to 15 times to get a sensor reading (waiting 2 seconds between each retry).</span>
+<span class="sd">humidity, temperature = Adafruit_DHT.read_retry(sensor, pin)</span>
+
+<span class="sd"># Note that sometimes you won&#39;t get a reading and</span>
+<span class="sd"># the results will be null (because Linux can&#39;t</span>
+<span class="sd"># guarantee the timing of calls to read the sensor).</span>
+<span class="sd"># If this happens try again!</span>
+<span class="sd">if humidity is not None and temperature is not None:</span>
+<span class="sd">        print(&#39;Temp={0:0.1f}*C  Humidity={1:0.1f}%&#39;.format(temperature, humidity))</span>
+<span class="sd">    else:</span>
+<span class="sd">            print(&#39;Failed to get reading. Try again!&#39;)</span>
+<span class="sd">&#39;&#39;&#39;</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Colin Keef.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          
+          SphinxRtdTheme.Navigation.enableSticky();
+          
+      });
+  </script> 
+
+</body>
+</html>

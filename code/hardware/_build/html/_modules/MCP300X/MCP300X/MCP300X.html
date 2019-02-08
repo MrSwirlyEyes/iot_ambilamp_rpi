@@ -1,0 +1,271 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>MCP300X.MCP300X.MCP300X &mdash; IoT Libraries  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> IoT Libraries
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">IoT Libraries</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>MCP300X.MCP300X.MCP300X</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for MCP300X.MCP300X.MCP300X</h1><div class="highlight"><pre>
+<span></span><span class="ch">#! usr/bin/python</span>
+
+<span class="c1"># import spidev</span>
+
+<span class="n">_MAX_SPEED_HZ</span><span class="o">=</span><span class="mi">1000000</span>
+
+<div class="viewcode-block" id="MCP300X"><a class="viewcode-back" href="../../../index.html#MCP300X.MCP300X">[docs]</a><span class="k">class</span> <span class="nc">MCP300X</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A library for using an MCP300 ADC. Currently supports MCP3004 and MCP3008</span>
+
+<span class="sd">    :param num_channels: the device being used (opt.), defaults to (int) 8 for the MCP3008 device</span>
+<span class="sd">    :param _MAX_SPEED_HZ: the max frequency permitted, used for configuring the IC, defaults to 10000000 hZ</span>
+
+<span class="sd">    :example: myMCP3008 = MCP300X()</span>
+
+<span class="sd">    :example: myMCP3004 = MCP300X(4)</span>
+
+<span class="sd">    Channel member variables exist to provide an abstraction for driver scripts, so that they can assign sensor pins to channels instead of directly to pins. It increases readability.</span>
+
+<span class="sd">    :example: light_dependent_resistor = myMCP3008.CH2</span>
+
+<span class="sd">    In this example, the circuit is set so that the value of the ldr is plugged in to channel 2 of the MCP device. Channels CH0 through CH7 are available, though only CH0-CH3 are meaningful when using an MCP3004 device.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">MCP3004</span> <span class="o">=</span> <span class="mi">4</span>
+    <span class="n">MCP3008</span> <span class="o">=</span> <span class="mi">8</span>
+    
+    <span class="n">CH0</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">CH1</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">CH2</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="n">CH3</span> <span class="o">=</span> <span class="mi">3</span>
+    <span class="n">CH4</span> <span class="o">=</span> <span class="mi">4</span>
+    <span class="n">CH5</span> <span class="o">=</span> <span class="mi">5</span>
+    <span class="n">CH6</span> <span class="o">=</span> <span class="mi">6</span>
+    <span class="n">CH7</span> <span class="o">=</span> <span class="mi">7</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num_channels</span><span class="o">=</span><span class="n">MCP3008</span><span class="p">,</span><span class="n">_MAX_SPEED_HZ</span><span class="o">=</span><span class="n">_MAX_SPEED_HZ</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_channels</span><span class="o">=</span><span class="n">num_channels</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">spi</span> <span class="o">=</span> <span class="n">spidev</span><span class="o">.</span><span class="n">SpiDev</span><span class="p">()</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">_MAX_SPEED_HZ</span><span class="o">=</span><span class="n">_MAX_SPEED_HZ</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_initialize_spi</span><span class="p">()</span>
+
+    <span class="sd">&#39;&#39;&#39; Helper function for object instantiation &#39;&#39;&#39;</span>
+    <span class="k">def</span> <span class="nf">_initialize_spi</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">spi</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">spi</span><span class="o">.</span><span class="n">max_speed_hz</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_MAX_SPEED_HZ</span>
+
+<div class="viewcode-block" id="MCP300X.read"><a class="viewcode-back" href="../../../index.html#MCP300X.MCP300X.read">[docs]</a>    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">channel</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Read from the specified channel of the MCP device</span>
+
+<span class="sd">        :param channel: the channel to read from (0 ... num_channels - 1)</span>
+<span class="sd">        :type channel: int</span>
+<span class="sd">        :return: analog value read from that pin of the chip</span>
+<span class="sd">        :rtype: int ranging 0-1023</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">raw_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">spi</span><span class="o">.</span><span class="n">xfer</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">8</span> <span class="o">+</span> <span class="n">channel</span> <span class="o">&lt;&lt;</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+        <span class="c1">#print(&quot;raw_data = &quot;, raw_data)</span>
+        <span class="c1">#print(raw_data[1]&amp;3 &lt;&lt; 8)</span>
+        <span class="n">adc_reading</span> <span class="o">=</span> <span class="p">((</span><span class="n">raw_data</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mi">3</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="mi">8</span><span class="p">)</span> <span class="o">+</span> <span class="n">raw_data</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+        <span class="c1">#print(&quot;adc_reading = &quot;, adc_reading)</span>
+
+        <span class="k">return</span> <span class="n">adc_reading</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Colin Keef.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          
+          SphinxRtdTheme.Navigation.enableSticky();
+          
+      });
+  </script> 
+
+</body>
+</html>

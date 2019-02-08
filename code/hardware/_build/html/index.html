@@ -1,0 +1,464 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>PiB Python Libraries &mdash; IoT Libraries  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="#" class="icon icon-home"> IoT Libraries
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">PiB Python Libraries</a></li>
+<li><a class="reference internal" href="#mcp300x">MCP300X</a></li>
+<li><a class="reference internal" href="#module-Sound_Detector">Sound Detector</a></li>
+<li><a class="reference internal" href="#dht22">DHT22</a></li>
+<li><a class="reference internal" href="#ssd1306">SSD1306</a><ul>
+<li><a class="reference internal" href="#ssd1306-demonstration">SSD1306 Demonstration</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-RGB_LED">RGB LED</a><ul>
+<li><a class="reference internal" href="#color">Color</a></li>
+</ul>
+</li>
+</ul>
+</div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">IoT Libraries</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="#">Docs</a> &raquo;</li>
+        
+      <li>PiB Python Libraries</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="pib-python-libraries">
+<h1>PiB Python Libraries<a class="headerlink" href="#pib-python-libraries" title="Permalink to this headline">¶</a></h1>
+<p>The following classes are available to students and hobbyists completing a Project in a Box project. They provide examples and enumerate the functions for each hardware device used in our projects. In the content of each project, you are asked to write scripts that interact with circuits, often to save or display readings. We provide these libraries to help you interface with hardware to fulfill those tasks.</p>
+<p>In your driver scripts, import these libraries with the following line, replacing DHT22 with the sensor you need:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">libraries.DHT22</span> <span class="kn">import</span> <span class="n">DHT22</span>
+</pre></div>
+</div>
+<div class="toctree-wrapper compound">
+</div>
+</div>
+<div class="section" id="mcp300x">
+<h1>MCP300X<a class="headerlink" href="#mcp300x" title="Permalink to this headline">¶</a></h1>
+</div>
+<div class="section" id="module-Sound_Detector">
+<span id="sound-detector"></span><h1>Sound Detector<a class="headerlink" href="#module-Sound_Detector" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="Sound_Detector.Sound_Detector">
+<em class="property">class </em><code class="descclassname">Sound_Detector.</code><code class="descname">Sound_Detector</code><span class="sig-paren">(</span><em>_gate_pin</em>, <em>_envelope_pin</em>, <em>_audio_pin</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Sound_Detector/Sound_Detector/Sound_Detector.html#Sound_Detector"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Sound_Detector.Sound_Detector" title="Permalink to this definition">¶</a></dt>
+<dd><p>A class that holds the pins used for the Sound Detector, so that driver scripts can reference them as arguments to the MCP device when reading their values</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>_gate_pin</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – the GPIO pin being used for the Gate (binary 0/1)</li>
+<li><strong>_envelope_pin</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – the GPIO pin being used for the Envelope (??)</li>
+<li><strong>_audio_pin</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – the GPIO pin being used for the Audio (analog 0-1023)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Example:</th><td class="field-body"><p class="first last">mySoundDetector = Sound_Detector(17, 22, 27)</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>It must be used in conjunction with the MCP300X library, with calls such as:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body">gate_value = myMCP.read(mySoundDetector.gate())</td>
+</tr>
+</tbody>
+</table>
+<p>Since the MCP300X library exposes channel aliases, you may wish to increase readability by initializing the sound detector like this. See MCP300X documentation for details.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body">mySoundDetector = MCP300X(17, myMCP.CH0, myMCP.CH1)</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="Sound_Detector.Sound_Detector.audio">
+<code class="descname">audio</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Sound_Detector/Sound_Detector/Sound_Detector.html#Sound_Detector.audio"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Sound_Detector.Sound_Detector.audio" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The GPIO pin connected to the Audio</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="Sound_Detector.Sound_Detector.envelope">
+<code class="descname">envelope</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Sound_Detector/Sound_Detector/Sound_Detector.html#Sound_Detector.envelope"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Sound_Detector.Sound_Detector.envelope" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The GPIO pin connected to the Envelope</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="Sound_Detector.Sound_Detector.gate">
+<code class="descname">gate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Sound_Detector/Sound_Detector/Sound_Detector.html#Sound_Detector.gate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Sound_Detector.Sound_Detector.gate" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The GPIO pin connected to the Gate</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="dht22">
+<h1>DHT22<a class="headerlink" href="#dht22" title="Permalink to this headline">¶</a></h1>
+</div>
+<div class="section" id="ssd1306">
+<h1>SSD1306<a class="headerlink" href="#ssd1306" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="ssd1306-demonstration">
+<h2>SSD1306 Demonstration<a class="headerlink" href="#ssd1306-demonstration" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+<div class="section" id="module-RGB_LED">
+<span id="rgb-led"></span><h1>RGB LED<a class="headerlink" href="#module-RGB_LED" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="RGB_LED.RGB_LED">
+<em class="property">class </em><code class="descclassname">RGB_LED.</code><code class="descname">RGB_LED</code><span class="sig-paren">(</span><em>_red_pin</em>, <em>_green_pin</em>, <em>_blue_pin</em>, <em>_is_common_anode=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/RGB_LED/RGB_LED/RGB_LED.html#RGB_LED"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#RGB_LED.RGB_LED" title="Permalink to this definition">¶</a></dt>
+<dd><p>A library for interfacing with common anode or common cathode RGB LEDs. The LEDs provided in PiB kits are common anode. Utilizes two helper utilities, COLOR and GPIO_PWM.</p>
+<p>GPIO_PWM abstracts exec commands which use the PiBits ServoBlaster tool (mega props to this convenient, well-documented solution to the problem of Raspberry Pi’s only having one PWM pin!) to write to each channel of the LED
+The COLOR utility accepts either a string of the form “FFFFFF” or values between 0 and 255 for each color channel, and is the only type accepted by the RGB_LED when setting a color.</p>
+<p>Example usage in a driver script:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">red_pin</span> <span class="o">=</span> <span class="mi">22</span>
+<span class="n">green_pin</span> <span class="o">=</span> <span class="mi">27</span>
+<span class="n">blue_pin</span> <span class="o">=</span> <span class="mi">17</span>
+<span class="n">is_common_anode</span><span class="o">=</span><span class="bp">True</span>
+
+<span class="n">rgb</span> <span class="o">=</span> <span class="n">RGB_LED</span><span class="p">(</span><span class="n">red_pin</span><span class="p">,</span> <span class="n">green_pin</span><span class="p">,</span> <span class="n">blue_pin</span><span class="p">,</span><span class="n">is_common_anode</span><span class="p">)</span>
+
+<span class="n">color</span> <span class="o">=</span> <span class="n">Color</span><span class="p">()</span>
+
+<span class="n">color</span><span class="o">.</span><span class="n">set_color</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>  <span class="c1"># sets color to pure green</span>
+<span class="n">rgb</span><span class="o">.</span><span class="n">set_color</span><span class="p">(</span><span class="n">color</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="RGB_LED.RGB_LED.set_color">
+<code class="descname">set_color</code><span class="sig-paren">(</span><em>color</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/RGB_LED/RGB_LED/RGB_LED.html#RGB_LED.set_color"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#RGB_LED.RGB_LED.set_color" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the LED on hardware to the RGB color stored in the color parameter.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Param:</th><td class="field-body">A color object, which must be set to the desired color before being passed. Upon construction, the color defaults to black, a.k.a., off.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<div class="section" id="color">
+<h2>Color<a class="headerlink" href="#color" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="RGB_LED.Color">
+<em class="property">class </em><code class="descclassname">RGB_LED.</code><code class="descname">Color</code><a class="reference internal" href="_modules/RGB_LED/RGB_LED/COLOR/COLOR.html#Color"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#RGB_LED.Color" title="Permalink to this definition">¶</a></dt>
+<dd><p>Setters and getters for an RGB color, used as a utility for the RGB_LED library.</p>
+<dl class="method">
+<dt id="RGB_LED.Color.get_blue">
+<code class="descname">get_blue</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/RGB_LED/RGB_LED/COLOR/COLOR.html#Color.get_blue"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#RGB_LED.Color.get_blue" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Numeric value in the blue channel</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="RGB_LED.Color.get_color">
+<code class="descname">get_color</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/RGB_LED/RGB_LED/COLOR/COLOR.html#Color.get_color"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#RGB_LED.Color.get_color" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">a triplet representing each color channel</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Example:</th><td class="field-body">(red, green, blue) = myColor.getColor()</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="RGB_LED.Color.get_green">
+<code class="descname">get_green</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/RGB_LED/RGB_LED/COLOR/COLOR.html#Color.get_green"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#RGB_LED.Color.get_green" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Numeric value in the green channel</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="RGB_LED.Color.get_red">
+<code class="descname">get_red</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/RGB_LED/RGB_LED/COLOR/COLOR.html#Color.get_red"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#RGB_LED.Color.get_red" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Numeric value in the red channel</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="RGB_LED.Color.set_color">
+<code class="descname">set_color</code><span class="sig-paren">(</span><em>red</em>, <em>green</em>, <em>blue</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/RGB_LED/RGB_LED/COLOR/COLOR.html#Color.set_color"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#RGB_LED.Color.set_color" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the color via ints.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>red</strong> – value 0-255 representing intensity of red</li>
+<li><strong>green</strong> – value 0-255 representing intensity of green</li>
+<li><strong>blue</strong> – value 0-255 representing intensity of blue</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Example:</th><td class="field-body"><p class="first last">myColor.set_color(255, 0, 255)</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="RGB_LED.Color.set_color_string">
+<code class="descname">set_color_string</code><span class="sig-paren">(</span><em>color</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/RGB_LED/RGB_LED/COLOR/COLOR.html#Color.set_color_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#RGB_LED.Color.set_color_string" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the color by parsing a hex color code into RGB values.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>color</strong> – A string with 6 hex digits, e.g. “FFFFFF”</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Example:</th><td class="field-body">myColor.set_color_string(“0F0F0F”)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Colin Keef.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          
+          SphinxRtdTheme.Navigation.enableSticky();
+          
+      });
+  </script> 
+
+</body>
+</html>

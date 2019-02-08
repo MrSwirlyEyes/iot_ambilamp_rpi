@@ -1,0 +1,519 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>SSD1306.SSD1306.SSD1306 &mdash; IoT Libraries  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> IoT Libraries
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">IoT Libraries</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>SSD1306.SSD1306.SSD1306</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for SSD1306.SSD1306.SSD1306</h1><div class="highlight"><pre>
+<span></span><span class="ch">#! /usr/bin/python</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">division</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">time</span>
+
+<span class="c1">#import Adafruit_GPIO as GPIO</span>
+<span class="c1">#import Adafruit_GPIO.SPI as SPI</span>
+
+
+<span class="c1"># Constants</span>
+<span class="n">SSD1306_I2C_ADDRESS</span> <span class="o">=</span> <span class="mh">0x3C</span>    <span class="c1"># 011110+SA0+RW - 0x3C or 0x3D</span>
+<span class="n">SSD1306_SETCONTRAST</span> <span class="o">=</span> <span class="mh">0x81</span>
+<span class="n">SSD1306_DISPLAYALLON_RESUME</span> <span class="o">=</span> <span class="mh">0xA4</span>
+<span class="n">SSD1306_DISPLAYALLON</span> <span class="o">=</span> <span class="mh">0xA5</span>
+<span class="n">SSD1306_NORMALDISPLAY</span> <span class="o">=</span> <span class="mh">0xA6</span>
+<span class="n">SSD1306_INVERTDISPLAY</span> <span class="o">=</span> <span class="mh">0xA7</span>
+<span class="n">SSD1306_DISPLAYOFF</span> <span class="o">=</span> <span class="mh">0xAE</span>
+<span class="n">SSD1306_DISPLAYON</span> <span class="o">=</span> <span class="mh">0xAF</span>
+<span class="n">SSD1306_SETDISPLAYOFFSET</span> <span class="o">=</span> <span class="mh">0xD3</span>
+<span class="n">SSD1306_SETCOMPINS</span> <span class="o">=</span> <span class="mh">0xDA</span>
+<span class="n">SSD1306_SETVCOMDETECT</span> <span class="o">=</span> <span class="mh">0xDB</span>
+<span class="n">SSD1306_SETDISPLAYCLOCKDIV</span> <span class="o">=</span> <span class="mh">0xD5</span>
+<span class="n">SSD1306_SETPRECHARGE</span> <span class="o">=</span> <span class="mh">0xD9</span>
+<span class="n">SSD1306_SETMULTIPLEX</span> <span class="o">=</span> <span class="mh">0xA8</span>
+<span class="n">SSD1306_SETLOWCOLUMN</span> <span class="o">=</span> <span class="mh">0x00</span>
+<span class="n">SSD1306_SETHIGHCOLUMN</span> <span class="o">=</span> <span class="mh">0x10</span>
+<span class="n">SSD1306_SETSTARTLINE</span> <span class="o">=</span> <span class="mh">0x40</span>
+<span class="n">SSD1306_MEMORYMODE</span> <span class="o">=</span> <span class="mh">0x20</span>
+<span class="n">SSD1306_COLUMNADDR</span> <span class="o">=</span> <span class="mh">0x21</span>
+<span class="n">SSD1306_PAGEADDR</span> <span class="o">=</span> <span class="mh">0x22</span>
+<span class="n">SSD1306_COMSCANINC</span> <span class="o">=</span> <span class="mh">0xC0</span>
+<span class="n">SSD1306_COMSCANDEC</span> <span class="o">=</span> <span class="mh">0xC8</span>
+<span class="n">SSD1306_SEGREMAP</span> <span class="o">=</span> <span class="mh">0xA0</span>
+<span class="n">SSD1306_CHARGEPUMP</span> <span class="o">=</span> <span class="mh">0x8D</span>
+<span class="n">SSD1306_EXTERNALVCC</span> <span class="o">=</span> <span class="mh">0x1</span>
+<span class="n">SSD1306_SWITCHCAPVCC</span> <span class="o">=</span> <span class="mh">0x2</span>
+
+<span class="c1"># Scrolling constants</span>
+<span class="n">SSD1306_ACTIVATE_SCROLL</span> <span class="o">=</span> <span class="mh">0x2F</span>
+<span class="n">SSD1306_DEACTIVATE_SCROLL</span> <span class="o">=</span> <span class="mh">0x2E</span>
+<span class="n">SSD1306_SET_VERTICAL_SCROLL_AREA</span> <span class="o">=</span> <span class="mh">0xA3</span>
+<span class="n">SSD1306_RIGHT_HORIZONTAL_SCROLL</span> <span class="o">=</span> <span class="mh">0x26</span>
+<span class="n">SSD1306_LEFT_HORIZONTAL_SCROLL</span> <span class="o">=</span> <span class="mh">0x27</span>
+<span class="n">SSD1306_VERTICAL_AND_RIGHT_HORIZONTAL_SCROLL</span> <span class="o">=</span> <span class="mh">0x29</span>
+<span class="n">SSD1306_VERTICAL_AND_LEFT_HORIZONTAL_SCROLL</span> <span class="o">=</span> <span class="mh">0x2A</span>
+
+<span class="c1"># import smbus</span>
+
+<span class="k">class</span> <span class="nc">SSD1306Base</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Base class for SSD1306-based OLED displays.  Implementors should subclass</span>
+<span class="sd">    and provide an implementation for the _initialize function.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">i2c_bus</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">i2c_address</span><span class="o">=</span><span class="n">SSD1306_I2C_ADDRESS</span><span class="p">,</span> <span class="n">i2c</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s1">&#39;SSD1306.SSD1306Base&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_i2c</span> <span class="o">=</span> <span class="n">smbus</span><span class="o">.</span><span class="n">SMBus</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_i2c_address</span> <span class="o">=</span> <span class="n">i2c_address</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="n">width</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">height</span> <span class="o">=</span> <span class="n">height</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_pages</span> <span class="o">=</span> <span class="n">height</span><span class="o">//</span><span class="mi">8</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="n">width</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">_pages</span><span class="p">)</span>
+
+        <span class="c1"># Handle hardware I2C</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        if i2c is not None:</span>
+<span class="sd">            self._log.debug(&#39;Using hardware I2C with custom I2C provider.&#39;)</span>
+<span class="sd">            self._i2c = i2c.get_i2c_device(i2c_address)</span>
+<span class="sd">        else:</span>
+<span class="sd">            self._log.debug(&#39;Using hardware I2C with platform I2C provider.&#39;)</span>
+<span class="sd">            import Adafruit_GPIO.I2C as I2C</span>
+<span class="sd">            if i2c_bus is None:</span>
+<span class="sd">                self._i2c = I2C.get_i2c_device(i2c_address)</span>
+<span class="sd">            else:</span>
+<span class="sd">                self._i2c = I2C.get_i2c_device(i2c_address, busnum=i2c_bus)</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+    <span class="k">def</span> <span class="nf">_initialize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+
+    <span class="k">def</span> <span class="nf">command</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Send command byte to display.&quot;&quot;&quot;</span>
+        <span class="c1"># I2C write.</span>
+        <span class="n">control</span> <span class="o">=</span> <span class="mh">0x00</span>   <span class="c1"># Co = 0, DC = 0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_i2c</span><span class="o">.</span><span class="n">write_byte_data</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_i2c_address</span><span class="p">,</span> <span class="n">control</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Send byte of data to display.&quot;&quot;&quot;</span>
+        <span class="c1"># I2C write.</span>
+        <span class="n">control</span> <span class="o">=</span> <span class="mh">0x40</span>   <span class="c1"># Co = 0, DC = 0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_i2c</span><span class="o">.</span><span class="n">write_byte_data</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_i2c_address</span><span class="p">,</span> <span class="n">control</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">begin</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vccstate</span><span class="o">=</span><span class="n">SSD1306_SWITCHCAPVCC</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Initialize display.&quot;&quot;&quot;</span>
+        <span class="c1"># Save vcc state.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_vccstate</span> <span class="o">=</span> <span class="n">vccstate</span>
+        <span class="c1"># Reset and initialize display.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_initialize</span><span class="p">()</span>
+        <span class="c1"># Turn on the display.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="n">SSD1306_DISPLAYON</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Reset the display.&quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+
+    <span class="k">def</span> <span class="nf">display</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Write display buffer to physical display.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="n">SSD1306_COLUMNADDR</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>              <span class="c1"># Column start address. (0 = reset)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>   <span class="c1"># Column end address.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="n">SSD1306_PAGEADDR</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>              <span class="c1"># Page start address. (0 = reset)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_pages</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># Page end address.</span>
+        <span class="c1"># Write buffer data.</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="p">),</span> <span class="mi">16</span><span class="p">):</span>
+            <span class="n">control</span> <span class="o">=</span> <span class="mh">0x40</span>   <span class="c1"># Co = 0, DC = 0</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_i2c</span><span class="o">.</span><span class="n">write_i2c_block_data</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_i2c_address</span><span class="p">,</span> <span class="n">control</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">i</span><span class="o">+</span><span class="mi">16</span><span class="p">])</span>
+
+    <span class="k">def</span> <span class="nf">image</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set buffer to value of Python Imaging Library image.  The image should</span>
+<span class="sd">        be in 1 bit mode and a size equal to the display size.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">image</span><span class="o">.</span><span class="n">mode</span> <span class="o">!=</span> <span class="s1">&#39;1&#39;</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Image must be in mode 1.&#39;</span><span class="p">)</span>
+        <span class="n">imwidth</span><span class="p">,</span> <span class="n">imheight</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">size</span>
+        <span class="k">if</span> <span class="n">imwidth</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="ow">or</span> <span class="n">imheight</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Image must be same dimensions as display (</span><span class="si">{0}</span><span class="s1">x</span><span class="si">{1}</span><span class="s1">).&#39;</span> \
+                <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">))</span>
+        <span class="c1"># Grab all the pixels from the image, faster than getpixel.</span>
+        <span class="n">pix</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>
+        <span class="c1"># Iterate through the memory pages</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_pages</span><span class="p">):</span>
+            <span class="c1"># Iterate through all x axis columns.</span>
+            <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">):</span>
+                <span class="c1"># Set the bits for the column of pixels at the current position.</span>
+                <span class="n">bits</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="c1"># Don&#39;t use range here as it&#39;s a bit slow</span>
+                <span class="k">for</span> <span class="n">bit</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">]:</span>
+                    <span class="n">bits</span> <span class="o">=</span> <span class="n">bits</span> <span class="o">&lt;&lt;</span> <span class="mi">1</span>
+                    <span class="n">bits</span> <span class="o">|=</span> <span class="mi">0</span> <span class="k">if</span> <span class="n">pix</span><span class="p">[(</span><span class="n">x</span><span class="p">,</span> <span class="n">page</span><span class="o">*</span><span class="mi">8</span><span class="o">+</span><span class="mi">7</span><span class="o">-</span><span class="n">bit</span><span class="p">)]</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">1</span>
+                <span class="c1"># Update buffer byte and increment to next byte.</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="n">bits</span>
+                <span class="n">index</span> <span class="o">+=</span> <span class="mi">1</span>
+
+    <span class="k">def</span> <span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Clear contents of image buffer.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">_pages</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">set_contrast</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">contrast</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Sets the contrast of the display.  Contrast should be a value between</span>
+<span class="sd">        0 and 255.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">contrast</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">contrast</span> <span class="o">&gt;</span> <span class="mi">255</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Contrast must be a value from 0 to 255 (inclusive).&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="n">SSD1306_SETCONTRAST</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="n">contrast</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">dim</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dim</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Adjusts contrast to dim the display if dim is True, otherwise sets the</span>
+<span class="sd">        contrast to normal brightness if dim is False.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Assume dim display.</span>
+        <span class="n">contrast</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="c1"># Adjust contrast based on VCC if not dimming.</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">dim</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_vccstate</span> <span class="o">==</span> <span class="n">SSD1306_EXTERNALVCC</span><span class="p">:</span>
+                <span class="n">contrast</span> <span class="o">=</span> <span class="mh">0x9F</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">contrast</span> <span class="o">=</span> <span class="mh">0xCF</span>
+
+
+<span class="k">class</span> <span class="nc">SSD1306_128_64</span><span class="p">(</span><span class="n">SSD1306Base</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i2c_bus</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">i2c_address</span><span class="o">=</span><span class="n">SSD1306_I2C_ADDRESS</span><span class="p">,</span> <span class="n">i2c</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="c1"># Call base class constructor.</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">SSD1306_128_64</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="mi">128</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="n">i2c_bus</span><span class="p">,</span> <span class="n">i2c_address</span><span class="p">,</span> <span class="n">i2c</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_initialize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># 128x64 pixel specific initialization.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="n">SSD1306_DISPLAYOFF</span><span class="p">)</span>                    <span class="c1"># 0xAE</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="n">SSD1306_SETDISPLAYCLOCKDIV</span><span class="p">)</span>            <span class="c1"># 0xD5</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="mh">0x80</span><span class="p">)</span>                                  <span class="c1"># the suggested ratio 0x80</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="n">SSD1306_SETMULTIPLEX</span><span class="p">)</span>                  <span class="c1"># 0xA8</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="mh">0x3F</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="n">SSD1306_SETDISPLAYOFFSET</span><span class="p">)</span>              <span class="c1"># 0xD3</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="mh">0x0</span><span class="p">)</span>                                   <span class="c1"># no offset</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="n">SSD1306_SETSTARTLINE</span> <span class="o">|</span> <span class="mh">0x0</span><span class="p">)</span>            <span class="c1"># line #0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="n">SSD1306_CHARGEPUMP</span><span class="p">)</span>                    <span class="c1"># 0x8D</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_vccstate</span> <span class="o">==</span> <span class="n">SSD1306_EXTERNALVCC</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="mh">0x10</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="mh">0x14</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="n">SSD1306_MEMORYMODE</span><span class="p">)</span>                    <span class="c1"># 0x20</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="mh">0x00</span><span class="p">)</span>                                  <span class="c1"># 0x0 act like ks0108</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="n">SSD1306_SEGREMAP</span> <span class="o">|</span> <span class="mh">0x1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="n">SSD1306_COMSCANDEC</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="n">SSD1306_SETCOMPINS</span><span class="p">)</span>                    <span class="c1"># 0xDA</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="mh">0x12</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="n">SSD1306_SETCONTRAST</span><span class="p">)</span>                   <span class="c1"># 0x81</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_vccstate</span> <span class="o">==</span> <span class="n">SSD1306_EXTERNALVCC</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="mh">0x9F</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="mh">0xCF</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="n">SSD1306_SETPRECHARGE</span><span class="p">)</span>                  <span class="c1"># 0xd9</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_vccstate</span> <span class="o">==</span> <span class="n">SSD1306_EXTERNALVCC</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="mh">0x22</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="mh">0xF1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="n">SSD1306_SETVCOMDETECT</span><span class="p">)</span>                 <span class="c1"># 0xDB</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="mh">0x40</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="n">SSD1306_DISPLAYALLON_RESUME</span><span class="p">)</span>           <span class="c1"># 0xA4</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="n">SSD1306_NORMALDISPLAY</span><span class="p">)</span>                 <span class="c1"># 0xA6</span>
+
+
+<div class="viewcode-block" id="SSD1306_128_32"><a class="viewcode-back" href="../../../index.html#SSD1306.SSD1306_128_32">[docs]</a><span class="k">class</span> <span class="nc">SSD1306_128_32</span><span class="p">(</span><span class="n">SSD1306Base</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This device is the OLED screen. It must always be initialized as shown below, before any images are displayed.</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        # 128x32 display with hardware I2C:</span>
+<span class="sd">        disp = SSD1306.SSD1306_128_32()</span>
+
+<span class="sd">        # Initialize library.</span>
+<span class="sd">        disp.begin()</span>
+
+<span class="sd">        # Clear display.</span>
+<span class="sd">        disp.clear()</span>
+<span class="sd">        disp.display()</span>
+
+<span class="sd">    To load an image, you must first set it, and then display it, like so:</span>
+
+<span class="sd">    .. code-block:: python</span>
+<span class="sd">    </span>
+<span class="sd">        # Display image.</span>
+<span class="sd">        disp.image(image)</span>
+<span class="sd">        disp.display()</span>
+
+<span class="sd">    The following notes pertain to creating images programmatically.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i2c_bus</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">i2c_address</span><span class="o">=</span><span class="n">SSD1306_I2C_ADDRESS</span><span class="p">,</span> <span class="n">i2c</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="c1"># Call base class constructor.</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">SSD1306_128_32</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="mi">128</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="n">i2c_bus</span><span class="p">,</span> <span class="n">i2c_address</span><span class="p">,</span> <span class="n">i2c</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_initialize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># 128x32 pixel specific initialization.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="n">SSD1306_DISPLAYOFF</span><span class="p">)</span>                    <span class="c1"># 0xAE</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="n">SSD1306_SETDISPLAYCLOCKDIV</span><span class="p">)</span>            <span class="c1"># 0xD5</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="mh">0x80</span><span class="p">)</span>                                  <span class="c1"># the suggested ratio 0x80</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="n">SSD1306_SETMULTIPLEX</span><span class="p">)</span>                  <span class="c1"># 0xA8</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="mh">0x1F</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="n">SSD1306_SETDISPLAYOFFSET</span><span class="p">)</span>              <span class="c1"># 0xD3</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="mh">0x0</span><span class="p">)</span>                                   <span class="c1"># no offset</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="n">SSD1306_SETSTARTLINE</span> <span class="o">|</span> <span class="mh">0x0</span><span class="p">)</span>            <span class="c1"># line #0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="n">SSD1306_CHARGEPUMP</span><span class="p">)</span>                    <span class="c1"># 0x8D</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_vccstate</span> <span class="o">==</span> <span class="n">SSD1306_EXTERNALVCC</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="mh">0x10</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="mh">0x14</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="n">SSD1306_MEMORYMODE</span><span class="p">)</span>                    <span class="c1"># 0x20</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="mh">0x00</span><span class="p">)</span>                                  <span class="c1"># 0x0 act like ks0108</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="n">SSD1306_SEGREMAP</span> <span class="o">|</span> <span class="mh">0x1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="n">SSD1306_COMSCANDEC</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="n">SSD1306_SETCOMPINS</span><span class="p">)</span>                    <span class="c1"># 0xDA</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="mh">0x02</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="n">SSD1306_SETCONTRAST</span><span class="p">)</span>                   <span class="c1"># 0x81</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="mh">0x8F</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="n">SSD1306_SETPRECHARGE</span><span class="p">)</span>                  <span class="c1"># 0xd9</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_vccstate</span> <span class="o">==</span> <span class="n">SSD1306_EXTERNALVCC</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="mh">0x22</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="mh">0xF1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="n">SSD1306_SETVCOMDETECT</span><span class="p">)</span>                 <span class="c1"># 0xDB</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="mh">0x40</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="n">SSD1306_DISPLAYALLON_RESUME</span><span class="p">)</span>           <span class="c1"># 0xA4</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="n">SSD1306_NORMALDISPLAY</span><span class="p">)</span>                 <span class="c1"># 0xA6</span></div>
+
+
+<span class="k">class</span> <span class="nc">SSD1306_96_16</span><span class="p">(</span><span class="n">SSD1306Base</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i2c_bus</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">i2c_address</span><span class="o">=</span><span class="n">SSD1306_I2C_ADDRESS</span><span class="p">,</span> <span class="n">i2c</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="c1"># Call base class constructor.</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">SSD1306_96_16</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="mi">96</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="n">i2c_bus</span><span class="p">,</span> <span class="n">i2c_address</span><span class="p">,</span> <span class="n">i2c</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_initialize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># 128x32 pixel specific initialization.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="n">SSD1306_DISPLAYOFF</span><span class="p">)</span>                    <span class="c1"># 0xAE</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="n">SSD1306_SETDISPLAYCLOCKDIV</span><span class="p">)</span>            <span class="c1"># 0xD5</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="mh">0x60</span><span class="p">)</span>                                  <span class="c1"># the suggested ratio 0x60</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="n">SSD1306_SETMULTIPLEX</span><span class="p">)</span>                  <span class="c1"># 0xA8</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="mh">0x0F</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="n">SSD1306_SETDISPLAYOFFSET</span><span class="p">)</span>              <span class="c1"># 0xD3</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="mh">0x0</span><span class="p">)</span>                                   <span class="c1"># no offset</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="n">SSD1306_SETSTARTLINE</span> <span class="o">|</span> <span class="mh">0x0</span><span class="p">)</span>            <span class="c1"># line #0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="n">SSD1306_CHARGEPUMP</span><span class="p">)</span>                    <span class="c1"># 0x8D</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_vccstate</span> <span class="o">==</span> <span class="n">SSD1306_EXTERNALVCC</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="mh">0x10</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="mh">0x14</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="n">SSD1306_MEMORYMODE</span><span class="p">)</span>                    <span class="c1"># 0x20</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="mh">0x00</span><span class="p">)</span>                                  <span class="c1"># 0x0 act like ks0108</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="n">SSD1306_SEGREMAP</span> <span class="o">|</span> <span class="mh">0x1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="n">SSD1306_COMSCANDEC</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="n">SSD1306_SETCOMPINS</span><span class="p">)</span>                    <span class="c1"># 0xDA</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="mh">0x02</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="n">SSD1306_SETCONTRAST</span><span class="p">)</span>                   <span class="c1"># 0x81</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="mh">0x8F</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="n">SSD1306_SETPRECHARGE</span><span class="p">)</span>                  <span class="c1"># 0xd9</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_vccstate</span> <span class="o">==</span> <span class="n">SSD1306_EXTERNALVCC</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="mh">0x22</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="mh">0xF1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="n">SSD1306_SETVCOMDETECT</span><span class="p">)</span>                 <span class="c1"># 0xDB</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="mh">0x40</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="n">SSD1306_DISPLAYALLON_RESUME</span><span class="p">)</span>           <span class="c1"># 0xA4</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="n">SSD1306_NORMALDISPLAY</span><span class="p">)</span>                 <span class="c1"># 0xA6</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Colin Keef.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          
+          SphinxRtdTheme.Navigation.enableSticky();
+          
+      });
+  </script> 
+
+</body>
+</html>
